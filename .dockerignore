@@ -50,3 +50,4 @@ fixtures.json
 scripts/*
 !scripts/wait_for_redis.py
 docker/build-dev.sh
+frontend-mobile/dist
