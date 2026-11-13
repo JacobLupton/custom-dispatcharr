@@ -84,7 +84,7 @@ export default function App() {
             )}
             <M3URefreshNotification />
             <Notifications
-              position={isDesktop ? 'bottom-right' : 'top-center'}
+              position={isDesktop ? 'top-right' : 'top-center'}
               containerWidth={isDesktop ? 350 : 'calc(100vw - 24px)'}
               zIndex={1000}
             />

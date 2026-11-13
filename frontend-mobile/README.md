@@ -1,6 +1,6 @@
-# Custom Dispatcharr UI (mobile-first)
+# Custom Dispatcharr UI
 
-A replacement frontend for Dispatcharr. It uses a bottom tab bar on phones and a sidebar on desktop, and installs as a PWA.
+A replacement frontend for Dispatcharr, for phones **and** desktop from one codebase. At 900px wide it switches from phone layout (bottom tabs, bottom sheets, full-screen player and forms) to desktop layout (sidebar, side drawers, docked player, two-pane settings). It installs as a PWA.
 
 ## How it stays patchable
 
@@ -44,8 +44,8 @@ docker build -f docker/Dockerfile.custom -t custom-dispatcharr .
 ./frontend-mobile/scripts/deploy-to-container.sh <container-name>
 ```
 
-## Known gaps / TODO
+## Known limitations
 
-- Automated tap tests on the Channels list were still failing at handoff, likely a leftover overlay. Verify on a real phone.
 - The guide shows placeholder programs until a working EPG source is added.
 - iOS Safari can't play live MPEG-TS in the browser. The player offers "copy stream URL" for VLC.
+- `deploy-to-container.sh` restarts the container, because Django caches `index.html`.

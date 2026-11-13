@@ -8,4 +8,7 @@ npm run build
 docker exec "$CONTAINER" sh -c 'find /app/frontend/dist -mindepth 1 -delete'
 docker cp dist/. "$CONTAINER":/app/frontend/dist/
 docker exec "$CONTAINER" bash -c 'source /etc/profile.d/dispatcharr.sh; export DJANGO_SECRET_KEY="$(tr -d "\r\n" < /data/jwt)"; cd /app && python manage.py collectstatic --noinput >/dev/null'
+# Django caches the index.html template, so restart to pick up new asset hashes.
+docker restart "$CONTAINER" >/dev/null
+until curl -sf "http://localhost:${PORT:-9191}/api/accounts/initialize-superuser/" >/dev/null; do sleep 2; done
 echo "Deployed to $CONTAINER - reload the page."

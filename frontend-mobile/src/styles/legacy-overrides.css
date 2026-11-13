@@ -42,10 +42,17 @@
     height: 40px;
     min-width: 40px;
   }
-  /* Upstream lays form columns side by side; stack them. */
-  .mantine-Modal-body .mantine-Flex-root[style*='gap'],
-  .mantine-Modal-body > form > .mantine-Group-root:not([data-nowrap]) {
-    flex-wrap: wrap;
+  /* Upstream lays form columns side by side (Group > Stack, Stack...); stack them. */
+  .mantine-Modal-body .mantine-Group-root:has(> .mantine-Stack-root ~ .mantine-Stack-root),
+  .mantine-Modal-body .mantine-Flex-root:has(> .mantine-Stack-root ~ .mantine-Stack-root) {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    flex-wrap: nowrap !important;
+  }
+  .mantine-Modal-body .mantine-Group-root:has(> .mantine-Stack-root ~ .mantine-Stack-root) > .mantine-Stack-root,
+  .mantine-Modal-body .mantine-Flex-root:has(> .mantine-Stack-root ~ .mantine-Stack-root) > .mantine-Stack-root {
+    width: 100%;
+    max-width: none !important;
   }
   .mantine-Modal-body .mantine-Grid-col {
     flex-basis: 100% !important;
