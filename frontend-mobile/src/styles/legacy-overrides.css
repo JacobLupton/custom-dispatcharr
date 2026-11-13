@@ -1,0 +1,108 @@
+/* ─────────── Mobile fixes applied to reused upstream components ───────────
+ * Upstream forms/modals/pages are rendered unchanged; these rules make them
+ * usable on a phone without forking their code.
+ */
+
+/* iOS zooms the page when focusing inputs under 16px. */
+@media (max-width: 899px) {
+  input,
+  select,
+  textarea,
+  .mantine-Input-input {
+    font-size: 16px !important;
+  }
+}
+
+/* Every upstream Modal becomes a full-screen sheet on phones. */
+@media (max-width: 899px) {
+  .mantine-Modal-inner {
+    padding: 0 !important;
+    align-items: stretch !important;
+  }
+  .mantine-Modal-content {
+    flex: 1 1 100% !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    max-height: 100dvh !important;
+    height: 100dvh;
+    border-radius: 0 !important;
+    display: flex;
+    flex-direction: column;
+  }
+  .mantine-Modal-header {
+    padding-top: calc(12px + env(safe-area-inset-top, 0px));
+  }
+  .mantine-Modal-body {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  }
+  .mantine-Modal-close {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+  }
+  /* Upstream lays form columns side by side (Group > Stack, Stack...); stack them. */
+  .mantine-Modal-body .mantine-Group-root:has(> .mantine-Stack-root ~ .mantine-Stack-root),
+  .mantine-Modal-body .mantine-Flex-root:has(> .mantine-Stack-root ~ .mantine-Stack-root) {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    flex-wrap: nowrap !important;
+  }
+  .mantine-Modal-body .mantine-Group-root:has(> .mantine-Stack-root ~ .mantine-Stack-root) > .mantine-Stack-root,
+  .mantine-Modal-body .mantine-Flex-root:has(> .mantine-Stack-root ~ .mantine-Stack-root) > .mantine-Stack-root {
+    width: 100%;
+    max-width: none !important;
+  }
+  .mantine-Modal-body .mantine-Grid-col {
+    flex-basis: 100% !important;
+    max-width: 100% !important;
+  }
+  .mantine-Modal-body .mantine-Divider-root[data-orientation='vertical'] {
+    display: none;
+  }
+}
+
+/* Legacy pages (wrapped by modules/legacy) */
+.dm-legacy {
+  min-height: 0;
+}
+.dm-legacy-body {
+  padding: 8px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+@media (max-width: 899px) {
+  /* Upstream pages assume 100vh with a left sidebar. */
+  .dm-legacy-body [style*='height: 100vh'],
+  .dm-legacy-body [style*='height:100vh'] {
+    height: auto !important;
+    min-height: calc(100dvh - 140px);
+  }
+  .dm-legacy-body table {
+    font-size: 13px;
+  }
+  .dm-legacy-body .mantine-Tabs-list {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .dm-legacy-body .mantine-Tabs-tab {
+    flex-shrink: 0;
+  }
+  .dm-legacy-body .mantine-Group-root {
+    flex-wrap: wrap;
+  }
+}
+
+/* Upstream notifications on phones */
+@media (max-width: 899px) {
+  .mantine-Notifications-root[data-position^='top'] {
+    top: calc(8px + env(safe-area-inset-top, 0px)) !important;
+  }
+}
+
+/* Upstream FloatingVideo is replaced by core/Player; hide any stray instance. */
+.floating-video {
+  display: none !important;
+}

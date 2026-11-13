@@ -1,0 +1,24 @@
+# Custom Dispatcharr: upstream backend + the mobile-first UI in frontend-mobile/.
+#
+#   docker build -f docker/Dockerfile.custom -t custom-dispatcharr .
+#
+# BASE_IMAGE defaults to the published upstream image, so the backend is
+# always stock Dispatcharr. Pin a version (e.g. ghcr.io/dispatcharr/dispatcharr:0.33.0)
+# to match the upstream commit you've merged.
+ARG BASE_IMAGE=ghcr.io/dispatcharr/dispatcharr:latest
+
+FROM node:24 AS ui-builder
+WORKDIR /src
+# Upstream frontend sources are needed: the new UI imports its data layer.
+COPY frontend/src /src/frontend/src
+COPY frontend/package.json /src/frontend/package.json
+COPY frontend-mobile/package.json frontend-mobile/package-lock.json* /src/frontend-mobile/
+WORKDIR /src/frontend-mobile
+RUN npm ci --no-audit --progress=false || npm install --no-audit --progress=false
+COPY frontend-mobile /src/frontend-mobile
+RUN npm run build
+
+FROM ${BASE_IMAGE}
+RUN rm -rf /app/frontend/dist
+COPY --from=ui-builder /src/frontend-mobile/dist /app/frontend/dist
+# collectstatic runs in the entrypoint on startup, publishing /assets from dist.
